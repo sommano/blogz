@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Add a Blog Entry</h1>
+    <form action="/validate", method="post">
+        <table>
+            <tbody>
+                <tr>
+                    <td><label for="blogtitle">Title for your new blog:</label></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input name="blogtitle" type = "text" class = "blogtitle" value={{blogtitle}}>
+                        <span class="error">{{blogtitle_error}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p></p>
+        <label for="blogbody">Your new Blog:</label>
+        <p>
+        <input name="blogbody" type = "textarea" class="blogtext" value={{blogbody}}>
+        <span class="error">{{blogbody_error}}</span>
+
+        <p></p>
+        <td><input type="submit" value ="Add Entry"/>
+
+    </form>
+
+
+{% endblock %}

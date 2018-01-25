@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Build a Blog</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="text/css" href="/static/styles.css">
 </head>
 <body>
-<a href="/blog">Main Blog Post</a>
-<a href="/newpost">Add a Blog Entry</a>
+    <nav>
+        <a href="/">home</a>
+        <a href="/blog">all posts</a>
+        <a href="/newpost">newpost</a>
+        <a href="/login">login</a>
+        <a href="/logout">logout</a>
+    </nav>
+
 <hr>
+{% with messages = get_flashed_messages(with_categories=True) %}
+    <ul>
+        {% for category,message in messages %}
+            <li {{category}}>{{message}}</li>
+        {% endfor %}
+    </ul>
+{% endwith %}
 {% block content %}
 
 {% endblock %}

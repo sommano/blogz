@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Single User Blog</h1>
+
+    {% if user_post|length == 0 %}
+        <h1>User has no blogs</h1>
+    {% else %}
+        {% for post in user_post %}
+        <h1></h1>
+        <p></p>
+        Time: {{post.timestamp}}
+        <p>Title: <a href="/blogpost?id={{post.id}}">{{post.title}}</a></p>
+
+        <p>Blog body: {{post.body}}</p>
+        <p>Written by:<a href="/singleUser?id={{post.user_id}}">{{post.owner.username}}</a></p>
+
+        <p></p>
+        <hr>
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock %}

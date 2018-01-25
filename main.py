@@ -35,7 +35,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ["login", "index", "signup", "blog" ]
+    allowed_routes = ["login", "index", "signup", "blog", "static" ]
     if request.endpoint not in allowed_routes and "username" not in session:
         return redirect("/login")
 
@@ -82,15 +82,18 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        if not user:
+            flash("Incorrect username", "error")
+            return redirect("/login")
+        elif user and user.password == password:
             session["username"] = username
             flash("Logged In", "info")
             return redirect("/newpost")
-        # elif password != user.password:
+        # elif user.username != username:
         #     flash("Incorrect username or password", "error")
-        #     return redirect("/login")
+        #     return redirect("/login", username=username)
         else:
-            flash("User does not exist or password does not match", "error")
+            flash("Password does not match", "error")
             return redirect("/login")
 
     return render_template("login.html")
@@ -205,19 +208,6 @@ def singleUser():
     user_post = Blog.query.filter_by(user_id=id).all()
     user = User.query.filter_by(id=id).first()
     return render_template("singleUser.html", user_post=user_post, user=user)
-
-# @app.route('/blog')
-# def blog():
-#     blog_id = request.args.get('id')
-#     user_id = request.args.get('user_id')
-#     if blog_id != None:
-#         blog = Blog.query.get(blog_id)
-#         return render_template('ind-blog-page.html', blog = blog)
-#     if user_id != None:
-#         blogs = Blog.query.filter_by(owner_id=user_id).all()
-#         return render_template('blog.html', blogs = blogs)
-#     return render_template('blog.html', title="Build-a-Blog :: New Post", blogs=getBlogs())
-
 
 @app.route("/newpost", methods = ["POST", "GET"])
 def newpost():
